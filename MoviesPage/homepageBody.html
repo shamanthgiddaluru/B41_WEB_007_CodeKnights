@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Categories</title>
+    <style>
+        body {
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .category {
+            margin-bottom: 40px;
+        }
+
+        .category h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .movie-box {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .movie-box img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .movie-box h4 {
+            font-size: 1.2rem;
+            color: #333;
+            margin: 15px 0;
+        }
+
+        .movie-box button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+            align-self: center; /* Ensures the button is centered horizontally */
+        }
+
+        .movie-box button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 1200px) {
+            .movie-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .movie-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .movie-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .movie-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="category">
+            <h3>Action Movies</h3>
+            <div class="movie-grid" id="actionMovies">
+                <!-- Movie boxes will be inserted here dynamically -->
+            </div>
+        </div>
+
+        <div class="category">
+            <h3>Comedy Movies</h3>
+            <div class="movie-grid" id="comedyMovies">
+                <!-- Movie boxes will be inserted here dynamically -->
+            </div>
+        </div>
+
+        <div class="category">
+            <h3>Drama Movies</h3>
+            <div class="movie-grid" id="dramaMovies">
+                <!-- Movie boxes will be inserted here dynamically -->
+            </div>
+        </div>
+
+        <div class="category">
+            <h3>Horror Movies</h3>
+            <div class="movie-grid" id="horrorMovies">
+                <!-- Movie boxes will be inserted here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = '417ea838';
+        
+        // Categories of Movies
+        const categories = ['Action', 'Comedy', 'Drama', 'Horror'];
+
+        // Fetch movies for a category
+        async function fetchMovies(category) {
+            try {
+                const response = await fetch(`https://www.omdbapi.com/?s=${category}&type=movie&apikey=${API_KEY}`);
+                const data = await response.json();
+
+                if (data.Response === 'True') {
+                    displayMovies(data.Search, category);
+                } else {
+                    console.error(`Unable to fetch ${category} movies.`);
+                }
+            } catch (error) {
+                console.error("An error occurred while fetching movie data.", error);
+            }
+        }
+
+        // Display the fetched movies in the corresponding grid
+        function displayMovies(movies, category) {
+            const categoryContainer = document.getElementById(`${category.toLowerCase()}Movies`);
+            categoryContainer.innerHTML = ''; // Clear existing content
+
+            movies.slice(0, 5).forEach(movie => {
+                const movieBox = document.createElement('div');
+                movieBox.classList.add('movie-box');
+                movieBox.innerHTML = `
+                    <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/300'}" alt="${movie.Title} Poster">
+                    <h4>${movie.Title}</h4>
+                    <button onclick="window.location.href='movie-details.html?id=${movie.imdbID}'">Book Now</button>
+                `;
+                categoryContainer.appendChild(movieBox);
+            });
+        }
+
+        // Fetch movies for all categories
+        categories.forEach(category => fetchMovies(category));
+
+    </script>
+</body>
+</html>

@@ -3,23 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movies</title>
+    <title>Movies Page</title>
     <link rel="stylesheet" href="moviesPage.css">
     <script src="moviesPage.js" defer></script>
 </head>
 <body>
+    <div id="titleDiv">
+        <h1>Explore Movies Near You</h1>
+    </div>
     <div id="container">
-        <div id="filter">
-            <h3>Filter by Genre</h3>
-            <button class="genre-btn" data-filter-type="genre">Action</button>
-            <button class="genre-btn" data-filter-type="genre">Comedy</button>
-            <button class="genre-btn" data-filter-type="genre">Drama</button>
-            <button class="genre-btn" data-filter-type="genre">Horror</button>
-            <button class="genre-btn" data-filter-type="genre">Romance</button>
+        <div id="filterDiv">
+            <p>Filter By Genre</p>
+            <button onclick="setGenre('Action')">Action</button>
+            <button onclick="setGenre('Comedy')">Comedy</button>
+            <button onclick="setGenre('Drama')">Drama</button>
+            <button onclick="setGenre('Horror')">Horror</button>
         </div>
-        <div id="content">
-            <div id="loadmorebutton"></div>
+        <div id="moviesBoxes">
+            <h3>Loading movies...</h3>
         </div>
     </div>
+    <div id="loadmorediv">
+        <button onclick="loadMoreMovies()">Load More</button>
+    </div>
+
+
 </body>
 </html>

@@ -1,90 +1,65 @@
-let moviesData = [];
-let currentPage = 1;
-let genre = 'Action';
-const moviesPerPage = 9;
 
-async function getMoviesByCategory(genre) {
+let moviesData = [];
+let displayedMovies = 0;
+let currentPage = 1;
+let currentGenre = '';
+
+async function getMovies(genre, page = 1) {
     try {
-        const response = await fetch(`http://www.omdbapi.com/?s=${genre}&page=${currentPage}&apikey=417ea838`);
+        const apiKey = '417ea838';
+        const response = await fetch(`http://www.omdbapi.com/?s=${genre}&type=movie&page=${page}&apikey=${apiKey}`);
         const data = await response.json();
 
-        if (data.Response === "True") {
-            const newMovies = data.Search;
-            moviesData = [...moviesData, ...newMovies].slice(0, currentPage * moviesPerPage);
-            currentPage++;
-            displayMovies(moviesData);
+        if (data.Response === 'True') {
+            moviesData = [...moviesData, ...data.Search];
+            displayMovies();
         } else {
-            displayNoMoviesMessage();
+            document.getElementById('moviesBoxes').innerHTML = `<h3>${data.Error}</h3>`;
+            document.getElementById('loadmorediv').style.display = 'none';
         }
     } catch (error) {
-        console.log(`${error.message}`);
-        displayNoMoviesMessage();
+        console.error(`Error: ${error}`);
     }
 }
 
-function displayMovies(movies) {
-    const contentDiv = document.getElementById('content');
-    contentDiv.innerHTML = '';
+function displayMovies() {
+    const moviesContainer = document.getElementById('moviesBoxes');
+    const loadMoreDiv = document.getElementById('loadmorediv');
+    const moviesToShow = moviesData.slice(displayedMovies, displayedMovies + 8);
 
-    if (movies.length === 0) {
-        displayNoMoviesMessage();
-    } else {
-        movies.forEach(movie => {
-            const movieDiv = document.createElement('div');
-            const movieImage = document.createElement('img');
-            movieImage.src = movie.Poster;
-            movieImage.alt = movie.Title;
+    if (displayedMovies === 0) moviesContainer.innerHTML = '';
 
-            const movieTitle = document.createElement('h3');
-            movieTitle.textContent = movie.Title;
+    moviesToShow.forEach(movie => {
+        const movieBox = document.createElement('div');
+        movieBox.className = 'movieBox';
+        movieBox.innerHTML = `
+            <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/180x270'}" alt="${movie.Title}">
+            <h4>${movie.Title}</h4>
+            <button onclick="redirectToMoviePage('${movie.imdbID}')">Book Now</button>
+        `;
+        moviesContainer.appendChild(movieBox);
+    });
 
-            const bookButton = document.createElement('button');
-            bookButton.textContent = 'Book Now';
-            bookButton.id = `book-${movie.imdbID}`;
-
-            movieDiv.appendChild(movieImage);
-            movieDiv.appendChild(movieTitle);
-            movieDiv.appendChild(bookButton);
-
-            contentDiv.appendChild(movieDiv);
-        });
-    }
-
-    const loadMoreButton = document.getElementById('loadmorebutton');
-    if (!loadMoreButton && movies.length >= currentPage * moviesPerPage) {
-        const newLoadMoreButton = document.createElement('button');
-        newLoadMoreButton.id = 'loadmorebutton';
-        newLoadMoreButton.textContent = 'Load More Movies';
-        newLoadMoreButton.addEventListener('click', loadMoreMovies());
-        contentDiv.appendChild(newLoadMoreButton);
-    }
-}
-
-function displayNoMoviesMessage() {
-    const contentDiv = document.getElementById('content');
-    contentDiv.innerHTML = 'No movies found for this genre.';
+    displayedMovies += 8;
+    loadMoreDiv.style.display = displayedMovies < moviesData.length ? 'block' : 'none';
 }
 
 function loadMoreMovies() {
-    getMoviesByCategory(genre);
+    currentPage++;
+    getMovies(currentGenre, currentPage);
 }
 
-function updateFilters(event) {
-    const selectedButton = event.target;
-    const filterType = selectedButton.dataset.filterType;
-    const filterValue = selectedButton.textContent;
-
-    if (filterType === 'genre') {
-        genre = filterValue;
-    }
-
+function setGenre(genre) {
     moviesData = [];
+    displayedMovies = 0;
     currentPage = 1;
-    getMoviesByCategory(genre);
+    currentGenre = genre;
+    getMovies(genre);
 }
 
-document.querySelectorAll('.genre-btn').forEach(button => {
-    button.addEventListener('click', updateFilters);
-});
+function redirectToMoviePage(imdbID) {
+    window.location.href = `movie-details.html?id=${imdbID}`;
+}
 
-getMoviesByCategory(genre);
+// Default genre set to 'Action'
+setGenre('Action');

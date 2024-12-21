@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details</title>
+    <style>
+        body {
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        #movieContainer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 40px;
+        }
+
+        #movieImage {
+            flex: 1 1 40%;
+            max-width: 300px;
+            height: auto;
+            object-fit: contain;
+            align-self: flex-start;
+        }
+
+        #movieDetails {
+            flex: 1 1 55%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #007bff;
+            margin: 0 0 20px;
+        }
+
+        #synopsis {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        #bookNowButton {
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        #bookNowButton:hover {
+            background-color: #218838;
+        }
+
+        #relatedMovies {
+            margin: 40px;
+        }
+
+        #relatedMovies h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        #relatedMoviesContainer {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .relatedMovie {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .relatedMovie img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .relatedMovie h4 {
+            margin: 10px;
+            font-size: 1.2rem;
+        }
+
+        .relatedMovie button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .relatedMovie button:hover {
+            background-color: #0056b3;
+        }
+
+        #loadMoreButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #loadMoreButton:hover {
+            background-color: #0056b3;
+        }
+
+        .movie-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .movie-chip {
+            background-color: #e9ecef;
+            color: #343a40;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            border-radius: 15px;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            #movieContainer {
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            #movieImage,
+            #movieDetails {
+                flex: 1 1 100%;
+            }
+
+            #relatedMoviesContainer {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section id="movieContainer">
+            <img id="movieImage" src="" alt="Movie Poster">
+            <article id="movieDetails">
+                <h1 id="movieTitle"></h1>
+                <div id="movieChips" class="movie-chips"></div>
+                <div id="synopsis"></div>
+                <!-- Update the Book Now button to pass the title to the seating page -->
+                <button id="bookNowButton" onclick="goToSeatingPage()">Book Now</button>
+            </article>
+        </section>
+
+        <section id="relatedMovies">
+            <h3>You May Also Like</h3>
+            <div id="relatedMoviesContainer"></div>
+            <button id="loadMoreButton">Load More</button>
+        </section>
+    </main>
+
+    <script>
+        const API_KEY = '417ea838';
+        let relatedMoviesPage = 1;
+        let currentGenre = "";
+
+        async function getMovieDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const movieID = urlParams.get('id');
+
+            if (!movieID) {
+                alert("Invalid Movie ID.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://www.omdbapi.com/?i=${movieID}&apikey=${API_KEY}`);
+                const movieData = await response.json();
+
+                if (movieData.Response === 'True') {
+                    displayMovieDetails(movieData);
+                    currentGenre = movieData.Genre.split(",")[0];
+                    getRelatedMovies();
+                } else {
+                    alert("Unable to fetch movie details.");
+                }
+            } catch (error) {
+                alert("An error occurred while fetching movie details.");
+            }
+        }
+
+        function displayMovieDetails(movieData) {
+            const movieTitle = document.getElementById('movieTitle');
+            const movieImage = document.getElementById('movieImage');
+            const synopsis = document.getElementById('synopsis');
+            const movieChips = document.getElementById('movieChips');
+
+            movieTitle.textContent = movieData.Title;
+            movieImage.src = movieData.Poster !== 'N/A' ? movieData.Poster : 'https://via.placeholder.com/300';
+            movieImage.alt = `${movieData.Title} Poster`;
+            synopsis.textContent = movieData.Plot || "No synopsis available.";
+
+            movieChips.innerHTML = '';
+
+            const details = [
+                { label: 'Rated', value: movieData.Rated },
+                { label: 'Runtime', value: movieData.Runtime },
+                { label: 'Genre', value: movieData.Genre },
+                { label: 'Director', value: movieData.Director },
+                { label: 'Writer', value: movieData.Writer },
+                { label: 'Actors', value: movieData.Actors }
+            ];
+
+            details.forEach(detail => {
+                if (detail.value && detail.value !== 'N/A') {
+                    const chip = document.createElement('div');
+                    chip.classList.add('movie-chip');
+                    chip.textContent = `${detail.label}: ${detail.value}`;
+                    movieChips.appendChild(chip);
+                }
+            });
+        }
+
+        async function getRelatedMovies(loadMore = false) {
+            if (!currentGenre) return;
+
+            try {
+                const response = await fetch(
+                    `https://www.omdbapi.com/?s=${currentGenre}&type=movie&page=${relatedMoviesPage}&apikey=${API_KEY}`
+                );
+                const data = await response.json();
+
+                if (data.Response === 'True') {
+                    displayRelatedMovies(data.Search);
+                    if (loadMore) relatedMoviesPage++;
+                } else {
+                    console.error(data.Error);
+                }
+            } catch (error) {
+                console.error("Error fetching related movies:", error);
+            }
+        }
+
+        function displayRelatedMovies(movies) {
+            const container = document.getElementById('relatedMoviesContainer');
+
+            movies.forEach(movie => {
+                const movieBox = document.createElement('div');
+                movieBox.classList.add('relatedMovie');
+                movieBox.innerHTML = `
+                    <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/300'}" alt="${movie.Title} Poster">
+                    <h4>${movie.Title}</h4>
+                    <button onclick="window.location.href='seatingPage.html?id=${movie.imdbID}'">Book Now</button>
+                `;
+                container.appendChild(movieBox);
+            });
+        }
+
+        // Modified function to redirect to the seating page with movie title as URL parameter
+        function goToSeatingPage() {
+            const movieTitle = document.getElementById('movieTitle').textContent;
+            window.location.href = `seatingPage.html?title=${encodeURIComponent(movieTitle)}`;
+        }
+
+        getMovieDetails();
+
+        document.getElementById('loadMoreButton').addEventListener('click', () => getRelatedMovies(true));
+    </script>
+</body>
+</html>

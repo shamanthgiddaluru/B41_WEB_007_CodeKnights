@@ -1,93 +1,165 @@
+body {
+    margin: 0;
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+#titleDiv {
+    text-align: center;
+    margin: 20px 0;
+}
+#titleDiv h1 {
+    font-size: 2rem;
+    color: #007bff;
+}
 #container {
     display: flex;
+    flex-wrap: nowrap;
+    width: 90%;
+    margin: auto;
     gap: 20px;
-    margin-top: 20px;
+    justify-content: space-between;
 }
-
-#filter {
-    position: sticky;
-    top: 0;
-    width: 250px;
+#filterDiv {
+    flex: 0 0 200px;
     background-color: white;
-    
-    border-radius: 50px;
     padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 100vh; 
-    overflow-y: auto; 
-}
-
-#filter button {
-    width: 75%;
-    margin: 10px;
-    padding: 10px;
-    
-    background-color: #e63946;
-    color: white;
-    font-size: 14px;
     border-radius: 10px;
-    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: fit-content;
 }
-
-#filter button:hover {
-    background-color: #d42f2f;
+#filterDiv p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
-
-#content {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    flex: 1;
-    padding: 20px;
-}
-
-#content div {
-    text-align: center;
-    border-radius: 8px;
-    padding: 10px;
-    overflow: hidden;
-}
-
-#content img {
+#filterDiv button {
+    display: block;
     width: 100%;
-    height: 500px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-button {
-    background-color: #e63946;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 1rem;
+    background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 8px;
-    padding: 10px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
+}
+#filterDiv button:hover {
+    background-color: #0056b3;
+}
+#moviesBoxes {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+.movieBox {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 400px;
+}
+img {
     width: 100%;
-    margin-top: 10px;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.movieBox h4 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+}
+.movieBox button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+.movieBox button:hover {
+    background-color: #218838;
+}
+#loadmorediv {
+    text-align: center;
+    margin: 20px 0;
+    display: none;
+}
+#loadmorediv button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#loadmorediv button:hover {
+    background-color: #0056b3;
 }
 
-button:hover {
-    background-color: #d42f2f;
+/* Responsive styles */
+@media (max-width: 1200px) {
+    #container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    #filterDiv {
+        flex: 1 1 100%;
+        max-width: 300px;
+        margin-bottom: 20px;
+    }
+    #moviesBoxes {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
-
-#loadmorebutton {
-    background-color: #2a9d8f;
-    width: 200px;
-    margin: 20px auto;
-}
-
-#loadmorebutton:hover {
-    background-color: #1f7f6f;
-}
-
 
 @media (max-width: 768px) {
+    #titleDiv h1 {
+        font-size: 1.5rem;
+    }
     #container {
         flex-direction: column;
-    }
-    #filter {
+        align-items: center;
         width: 100%;
+    }
+    #filterDiv {
+        max-width: 100%;
+        margin-bottom: 20px;
+        order: -1;  /* Ensures filter comes before movies */
+    }
+    #moviesBoxes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .movieBox {
+        height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    #titleDiv h1 {
+        font-size: 1.2rem;
+    }
+    #filterDiv {
+        padding: 10px;
+    }
+    #moviesBoxes {
+        grid-template-columns: 1fr;
+    }
+    .movieBox {
+        height: auto;
+        padding: 10px;
     }
 }

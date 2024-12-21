@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        #titleDiv {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #titleDiv h1 {
+            font-size: 2rem;
+            color: #007bff;
+        }
+        #container {
+            display: flex;
+            flex-wrap: nowrap;
+            width: 90%;
+            margin: auto;
+            gap: 20px;
+            justify-content: space-between;
+        }
+        #filterDiv {
+            flex: 0 0 200px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+        #filterDiv p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        #filterDiv button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #filterDiv button:hover {
+            background-color: #0056b3;
+        }
+        #moviesBoxes {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .movieBox {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 400px;
+        }
+        img {
+            width: 100%;
+            height: 270px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .movieBox h4 {
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+        .movieBox button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        .movieBox button:hover {
+            background-color: #218838;
+        }
+        #loadmorediv {
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+        #loadmorediv button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #loadmorediv button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1200px) {
+            #container {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            #filterDiv {
+                flex: 1 1 100%;
+                max-width: 300px;
+                margin-bottom: 20px;
+            }
+            #moviesBoxes {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #titleDiv h1 {
+                font-size: 1.5rem;
+            }
+            #container {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            #filterDiv {
+                max-width: 100%;
+                margin-bottom: 20px;
+                order: -1;  /* Ensures filter comes before movies */
+            }
+            #moviesBoxes {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .movieBox {
+                height: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #titleDiv h1 {
+                font-size: 1.2rem;
+            }
+            #filterDiv {
+                padding: 10px;
+            }
+            #moviesBoxes {
+                grid-template-columns: 1fr;
+            }
+            .movieBox {
+                height: auto;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="titleDiv">
+        <h1>Explore Movies Near You</h1>
+    </div>
+    <div id="container">
+        <div id="filterDiv">
+            <p>Filter By Genre</p>
+            <button onclick="setGenre('Action')">Action</button>
+            <button onclick="setGenre('Comedy')">Comedy</button>
+            <button onclick="setGenre('Drama')">Drama</button>
+            <button onclick="setGenre('Horror')">Horror</button>
+        </div>
+        <div id="moviesBoxes">
+            <h3>Loading movies...</h3>
+        </div>
+    </div>
+    <div id="loadmorediv">
+        <button onclick="loadMoreMovies()">Load More</button>
+    </div>
+
+    <script>
+        let moviesData = [];
+        let displayedMovies = 0;
+        let currentPage = 1;
+        let currentGenre = '';
+
+        async function getMovies(genre, page = 1) {
+            try {
+                const apiKey = '417ea838';
+                const response = await fetch(`http://www.omdbapi.com/?s=${genre}&type=movie&page=${page}&apikey=${apiKey}`);
+                const data = await response.json();
+
+                if (data.Response === 'True') {
+                    moviesData = [...moviesData, ...data.Search];
+                    displayMovies();
+                } else {
+                    document.getElementById('moviesBoxes').innerHTML = `<h3>${data.Error}</h3>`;
+                    document.getElementById('loadmorediv').style.display = 'none';
+                }
+            } catch (error) {
+                console.error(`Error: ${error}`);
+            }
+        }
+
+        function displayMovies() {
+            const moviesContainer = document.getElementById('moviesBoxes');
+            const loadMoreDiv = document.getElementById('loadmorediv');
+            const moviesToShow = moviesData.slice(displayedMovies, displayedMovies + 8);
+
+            if (displayedMovies === 0) moviesContainer.innerHTML = '';
+
+            moviesToShow.forEach(movie => {
+                const movieBox = document.createElement('div');
+                movieBox.className = 'movieBox';
+                movieBox.innerHTML = `
+                    <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/180x270'}" alt="${movie.Title}">
+                    <h4>${movie.Title}</h4>
+                    <button onclick="redirectToMoviePage('${movie.imdbID}')">Book Now</button>
+                `;
+                moviesContainer.appendChild(movieBox);
+            });
+
+            displayedMovies += 8;
+            loadMoreDiv.style.display = displayedMovies < moviesData.length ? 'block' : 'none';
+        }
+
+        function loadMoreMovies() {
+            currentPage++;
+            getMovies(currentGenre, currentPage);
+        }
+
+        function setGenre(genre) {
+            moviesData = [];
+            displayedMovies = 0;
+            currentPage = 1;
+            currentGenre = genre;
+            getMovies(genre);
+        }
+
+        function redirectToMoviePage(imdbID) {
+            window.location.href = `movie-details.html?id=${imdbID}`;
+        }
+
+        // Default genre set to 'Action'
+        setGenre('Action');
+    </script>
+</body>
+</html>

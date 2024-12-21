@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .slider-container {
+            width: 90%; /* Adjust as needed */
+            height: 300px; /* Adjust as needed */
+            margin: 50px auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out; /* Smooth transition */
+        }
+
+        .slide {
+            min-width: 100%; /* Ensures each image takes full width */
+            height: 100%;
+            flex-shrink: 0; /* Prevents images from shrinking */
+            overflow: hidden; /* Prevents image overflow */
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Maintain aspect ratio and cover container */
+            display: block; /* Prevents small space below image */
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            z-index: 1; /* Ensure buttons are on top */
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+        /* Optional: Add indicators */
+        .indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+        }
+
+        .indicator {
+            width: 15px;
+            height: 15px;
+            margin: 0 5px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .indicator.active {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <div class="slide"><img src="https://assets-in.bmscdn.com/promotions/cms/creatives/1726036566435_playcardnewweb.jpg" alt="Image 1"></div>
+            <div class="slide"><img src="https://assets-in.bmscdn.com/promotions/cms/creatives/1733911700713_edwebgeneralsales.jpg" alt="Image 2"></div>
+            <div class="slide"><img src="https://assets-in.bmscdn.com/promotions/cms/creatives/1734522092035_saturdaynightweb.jpg" alt="Image 3"></div>
+             </div>
+        <button class="nav-button prev" onclick="prevSlide()">&#10094;</button>
+        <button class="nav-button next" onclick="nextSlide()">&#10095;</button>
+
+        <div class="indicators" id="indicators">
+
+        </div>
+
+    </div>
+
+    <script>
+        const slider = document.getElementById('slider');
+        const indicatorsContainer = document.getElementById('indicators');
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        // Create indicators
+        for (let i = 0; i < slides.length; i++) {
+            const indicator = document.createElement('div');
+            indicator.classList.add('indicator');
+            indicator.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        const indicators = document.querySelectorAll('.indicator');
+        updateIndicators();
+        function showSlide(n) {
+            slider.style.transform = `translateX(-${n * 100}%)`;
+            currentSlide = n;
+            updateIndicators();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function goToSlide(n){
+            showSlide(n);
+        }
+        function updateIndicators() {
+            indicators.forEach((indicator, index) => {
+                if (index === currentSlide) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+
+        // Optional: Automatic slideshow
+        setInterval(nextSlide, 3000); // Change slide every 3 seconds
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Booking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .main {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right, #66c2ff, #2980b9);
+        }
+
+        .tickets {
+            width: 550px;
+            height: fit-content;
+            border-radius: 8px;
+            padding: 16px;
+            background: white;
+            box-shadow: 0px 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .ticket-selector {
+            background: rgb(243, 243, 243);
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .seats {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .status {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .item {
+            font-size: 14px;
+            position: relative;
+        }
+
+        .item::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -14px;
+            transform: translate(0, -50%);
+            width: 10px;
+            height: 10px;
+            background: rgb(255, 255, 255);
+            outline: 1px solid rgb(120, 120, 120);
+            border-radius: 1px;
+        }
+
+        .item:nth-child(2)::before {
+            background: rgb(180, 180, 180);
+            outline: none;
+        }
+
+        .item:nth-child(3)::before {
+            background: #47a3ff;
+            outline: none;
+        }
+
+        .all-seats {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-gap: 15px;
+            margin: 60px 0;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .seat {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 1px;
+            outline: 1px solid rgb(180, 180, 180);
+            cursor: pointer;
+        }
+
+        .all-seats input:checked+label {
+            background: #47a3ff;
+            outline: none;
+        }
+
+        .seat.booked {
+            background: rgb(180, 180, 180);
+            outline: none;
+        }
+
+        input {
+            display: none;
+        }
+
+        .seats::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 0);
+            width: 300px;
+            height: 7px;
+            background: rgb(141, 198, 255);
+            border-radius: 0 0 3px 3px;
+            border-top: 1px solid rgb(180, 180, 180);
+        }
+
+        .screentext {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .timings {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .dates {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dates-item {
+            width: 50px;
+            height: 50px;
+            background: rgb(233, 233, 233);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 10px 0;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .day {
+            font-size: 12px;
+        }
+
+        .times {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .time {
+            font-size: 14px;
+            width: fit-content;
+            padding: 7px 14px;
+            background: rgb(233, 233, 233);
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .timings input:checked+label {
+            background: #47a3ff;
+            color: white;
+        }
+
+        .price {
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .total {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .total div {
+            display: flex;
+            gap: 4px;
+        }
+
+        .total span {
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .price button {
+            background: rgb(60, 60, 60);
+            color: white;
+            font-size: 14px;
+            padding: 7px 14px;
+            border-radius: 2px;
+            outline: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1f5c84;
+        }
+
+        button.disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+
+        .popup.show {
+            display: block;
+        }
+
+        .redirect-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        .dates-item:hover,
+        .time:hover {
+            background: #47a3ff;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="tickets">
+            <div class="ticket-selector">
+                <div class="title">
+                    <!-- Movie title will be inserted here -->
+                </div>
+                <div class="seats">
+                    <div class="status">
+                        <div class="item">Available</div>
+                        <div class="item">Booked</div>
+                        <div class="item">Selected</div>
+                    </div>
+                    <div class="all-seats">
+                        <input type="checkbox" name="tickets" id="s1">
+                        <label for="s1" class="seat booked"></label>
+                    </div>
+                </div>
+                <div class="screentext">All Eyes Here Please</div>
+                <div class="timings">
+                    <div class="dates">
+                        <input type="radio" name="date" id="d1" checked>
+                        <label for="d1" class="dates-item">
+                            <div class="day">Fri</div>
+                            <div class="date">12</div>
+                        </label>
+                        <input type="radio" name="date" id="d2">
+                        <label for="d2" class="dates-item">
+                            <div class="day">Sat</div>
+                            <div class="date">13</div>
+                        </label>
+                        <input type="radio" name="date" id="d3">
+                        <label for="d3" class="dates-item">
+                            <div class="day">Sun</div>
+                            <div class="date">14</div>
+                        </label>
+                        <input type="radio" name="date" id="d4" checked>
+                        <label for="d4" class="dates-item">
+                            <div class="day">Mon</div>
+                            <div class="date">15</div>
+                        </label>
+                        
+                    </div>
+                    <div class="times">
+                        <input type="radio" name="time" id="t1" checked>
+                        <label for="t1" class="time">11:00</label>
+                        <input type="radio" name="time" id="t2">
+                        <label for="t2" class="time">14:00</label>
+                        <input type="radio" name="time" id="t3">
+                        <label for="t3" class="time">17:00</label>
+                        <input type="radio" name="time" id="t4">
+                        <label for="t4" class="time">21:00</label>
+                    </div>
+                </div>
+            </div>
+            <div class="price">
+                <div class="total">
+                    <span><span class="count">0</span> Tickets</span>
+                    <div>₹ <div class="amount">0</div></div>
+                </div>
+                <button id="book-btn" class="disabled" disabled>Book</button>
+            </div>
+        </div>
+        <div id="popup" class="popup">Ticket has been booked!</div>
+        <div id="redirect-text" class="redirect-text">Tickets have been Booked....</div>
+    </div>
+
+    <script>
+        // Get the movie title from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const movieTitle = urlParams.get('title');
+
+        // Check if the title is found in the query string
+        if (movieTitle) {
+            document.querySelector('.title').textContent = movieTitle;
+        } else {
+            document.querySelector('.title').textContent = "Movie Title Not Available";
+        }
+
+        const seats = document.querySelector(".all-seats");
+        const bookBtn = document.getElementById("book-btn");
+        const countElement = document.querySelector(".count");
+        const amountElement = document.querySelector(".amount");
+        const popup = document.getElementById("popup");
+        const redirectText = document.getElementById("redirect-text");
+
+        // Generate seats dynamically
+        for (let i = 0; i < 59; i++) {
+            let isBooked = Math.random() < 0.3; 
+            let bookedClass = isBooked ? "booked" : "";
+
+            seats.insertAdjacentHTML(
+                "beforeend",
+                `<input type="checkbox" id="s${i + 1}" ${isBooked ? "disabled" : ""} />
+                <label for="s${i + 1}" class="seat ${bookedClass}"></label>`
+            );
+        }
+
+        // Seat selection logic
+        const tickets = seats.querySelectorAll("input");
+        let totalAmount = 0;
+        let totalCount = 0;
+
+        tickets.forEach((ticket) => {
+            ticket.addEventListener("change", () => {
+                const checkedTickets = Array.from(tickets).filter(ticket => ticket.checked);
+                totalCount = checkedTickets.length;
+                totalAmount = totalCount * 100; // Assume ticket price is ₹100 each
+
+                countElement.textContent = totalCount;
+                amountElement.textContent = totalAmount;
+
+                // Enable/Disable the book button
+                if (totalCount > 0) {
+                    bookBtn.disabled = false;
+                    bookBtn.classList.remove("disabled");
+                } else {
+                    bookBtn.disabled = true;
+                    bookBtn.classList.add("disabled");
+                }
+            });
+        });
+
+        // Handle booking action
+        bookBtn.addEventListener("click", () => {
+            // Show booking confirmation popup
+            popup.classList.add("show");
+
+            // Show redirecting message
+            redirectText.style.display = "block";
+            redirectText.textContent = "Tickets have been Booked";
+
+            let dotCount = 0;
+            const dotInterval = setInterval(() => {
+                dotCount = (dotCount + 1) % 4; // Cycle through 0, 1, 2, 3
+                redirectText.textContent = "Tickets have been Booked" + ".".repeat(dotCount);
+            }, 1000);
+
+            // Redirect after 5 seconds
+            setTimeout(() => {
+                clearInterval(dotInterval);
+                window.location.href = "index.html"; // Replace with your checkout page URL
+            }, 5000);
+        });
+    </script>
+</body>
+
+</html>

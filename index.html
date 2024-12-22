@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header Example</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* header section */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .logo>img {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+        }
+
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .search-bar .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .search-bar .suggestions li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .search-bar .suggestions li:hover {
+            background-color: #eee;
+        }
+
+        #profile-icon {
+            font-size: 50px;
+            /* Adjust the size */
+            color: #000;
+            /* Set icon color */
+            margin-top: 10px;
+            /* Add space above the icon */
+            padding-right: 15px;
+            cursor: pointer;
+            /* Change cursor to pointer for clickability */
+            transition: transform 0.3s ease;
+            /* Optional: smooth animation when hovered */
+        }
+
+        /* Example hover effect */
+        #profile-icon:hover {
+            transform: scale(1.1);
+            /* Slightly enlarge icon on hover */
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 10px;
+            background-color: #2B3149;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: rgb(255, 255, 255);
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #3e95f1;
+        }
+
+        .extra-section {
+            display: flex;
+            align-items: center;
+            margin-left: 30px;
+        }
+
+        .city-selector {
+            margin-right: 20px;
+            font-size: 14px;
+            color: black;
+            border: none;
+        }
+
+        .sign-in-btn {
+            padding: 5px 10px;
+            background-color: #ff385c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        /* sliding image section*/
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .slider-container {
+            width: 90%;
+            height: 300px;
+            margin: 20px auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+        }
+
+        .indicator {
+            width: 15px;
+            height: 15px;
+            margin: 0 5px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .indicator.active {
+            background-color: white;
+        }
+
+        /* Body section*/
+        .container {
+            width: 80%;
+            margin: 50px auto;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .category {
+            margin-bottom: 40px;
+        }
+
+        .category h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .movie-box {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .movie-box img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .movie-box h4 {
+            font-size: 1.2rem;
+            color: #333;
+            margin: 15px 0;
+        }
+
+        .movie-box button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+            align-self: center;
+            /* Ensures the button is centered horizontally */
+        }
+
+        .movie-box button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 1200px) {
+            .movie-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .movie-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .movie-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .movie-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* footer section*/
+        footer {
+            background-color: #2B3149;
+            /* Dark background */
+            color: #fff;
+            /* White text */
+            padding: 20px 0;
+            /* Top and bottom padding */
+            font-family: sans-serif;
+            margin-top: 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            /* Allows sections to wrap on smaller screens */
+            justify-content: space-around;
+            /* Distributes sections evenly */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-section {
+            flex: 1 1 250px;
+            /* Each section takes up equal space, minimum 250px wide */
+            margin-bottom: 20px;
+            /* Space between sections */
+        }
+
+        .footer-section h4 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section li {
+            margin-bottom: 5px;
+        }
+
+        .footer-section a {
+            color: #eee;
+            text-decoration: none;
+            transition: color 0.3s;
+            /* Smooth color transition on hover */
+        }
+
+        .footer-section a:hover {
+            color: #3e95f1;
+        }
+
+        .social-icons img {
+            width: 30px;
+            height: 30px;
+            margin: 0 5px;
+        }
+
+        .payment-methods img {
+            width: 50px;
+            height: 30px;
+            margin: 0 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 10px;
+
+            /* Subtle top border */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            margin-top: 10px;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        /*header responce*/
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-bar {
+                margin-left: 10px;
+                margin-right: 10px;
+                width: 100%;
+            }
+
+            .extra-section {
+                margin: 10px;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .nav-links {
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+            }
+        }
+
+        /*nav responce*/
+        @media (max-width:300px) {
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /*sliding image responce*/
+        @media (max-width: 400px) {
+            .slider-container {
+                width: 90%;
+                height: 100px;
+                margin: 20px auto;
+                overflow: hidden;
+                position: relative;
+            }
+        }
+
+        /*footer responce*/
+        @media (max-width: 300px) {
+            .footer-content {
+                flex-direction: column;
+                /* Stack sections vertically */
+                text-align: center;
+            }
+
+            .footer-section {
+                margin: 10px auto;
+                text-align: center;
+
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="top-bar">
+            <div class="logo">
+                <img src="Showtime.png" alt="Cinetime" />
+            </div>
+
+
+            <form class="search-bar">
+                <input type="text" id="searchInput" name="query" placeholder="Search movies" />
+            </form>
+
+            <div class="extra-section">
+                <select class="city-selector">
+                    <option>Mumbai</option>
+                    <option>Dehli</option>
+                    <option>Pune</option>
+                </select>
+                <button class="sign-in-btn" id="signInBtn">Sign in</button>
+                <i id="profile-icon" class="fas fa-user-circle"
+                    style="font-size: 50px; display: none; color: #000;"></i>
+
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="./moviespage.html">Movies</a></li>
+            <li><a href="#">Stream</a></li>
+            <li><a href="#">Events</a></li>
+            <li><a href="#">Plays</a></li>
+            <li><a href="#">Sports</a></li>
+            <li><a href="#">Activities</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <div class="slider-container">
+            <div class="slider" id="slider">
+                <div class="slide"><img
+                        src="https://assets-in.bmscdn.com/promotions/cms/creatives/1726036566435_playcardnewweb.jpg"
+                        alt="Image 1"></div>
+                <div class="slide"><img
+                        src="https://assets-in.bmscdn.com/promotions/cms/creatives/1733911700713_edwebgeneralsales.jpg"
+                        alt="Image 2"></div>
+                <div class="slide"><img
+                        src="https://assets-in.bmscdn.com/promotions/cms/creatives/1734522092035_saturdaynightweb.jpg"
+                        alt="Image 3"></div>
+            </div>
+            <button class="nav-button prev" onclick="prevSlide()">&#10094;</button>
+            <button class="nav-button next" onclick="nextSlide()">&#10095;</button>
+            <div class="indicators" id="indicators"></div>
+        </div>
+    </main>
+    <div class="container">
+        <div class="category">
+            <h3>Action Movies</h3>
+            <div class="movie-grid" id="actionMovies">
+                <!-- Movie boxes will be inserted here dynamically -->
+            </div>
+        </div>
+
+        <div class="category">
+            <h3>Comedy Movies</h3>
+            <div class="movie-grid" id="comedyMovies">
+                <!-- Movie boxes will be inserted here dynamically -->
+            </div>
+        </div>
+
+        <div class="category">
+            <h3>Drama Movies</h3>
+            <div class="movie-grid" id="dramaMovies">
+                <!-- Movie boxes will be inserted here dynamically -->
+            </div>
+        </div>
+
+        <div class="category">
+            <h3>Horror Movies</h3>
+            <div class="movie-grid" id="horrorMovies">
+                <!-- Movie boxes will be inserted here dynamically -->
+            </div>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <ul>
+                    <li><a href="#">About Our Company</a></li>
+                    <li><a href="#">Our Team</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Help & Support</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Ticket Policies</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="#" target="_blank"><img src="facebook.png" alt="Facebook"></a>
+                    <a href="#" target="_blank"><img src="twitter.png" alt="Twitter"></a>
+                    <a href="#" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Payment Methods</h4>
+                <div class="payment-methods">
+                    <a href="#" target="_blank"><img src="visa.png" alt="Visa"></a>
+                    <a href="#" target="_blank"><img src="mastercard.png" alt="Mastercard"></a>
+                    <a href="#" target="_blank"><img src="paypal.png" alt="Paypal"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Show Time. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        
+        //search bar 
+        let debounceTimer;
+
+        // Add event listener for the input field
+        document.getElementById('searchInput').addEventListener('input', function (event) {
+            const movieName = event.target.value.trim(); // Get the trimmed value of the input field
+
+            // Clear the previous debounce timer
+            clearTimeout(debounceTimer);
+
+            // Set a new debounce timer
+            debounceTimer = setTimeout(() => {
+                if (movieName) {
+                    searchMovie(movieName); // Call the searchMovie function after the delay
+                }
+            }, 500); // Wait for 3 seconds
+        });
+
+        // The searchMovie function
+        function searchMovie(movieName) {
+            const url = `http://www.omdbapi.com/?t=${encodeURIComponent(movieName)}&apikey=417ea838`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.Response === 'True') {
+                        window.location.href = `movie-details.html?id=${data.imdbID}`;
+                    } else {
+                        console.log("Movie not found."); // Optionally show feedback in the UI
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching movie details:", error);
+                    alert("An error occurred while searching for the movie.");
+                });
+        }
+
+        // searchbar
+
+
+        function displaySuggestions(suggestions) {
+            const suggestionList = document.getElementById('suggestion-list');
+            suggestionList.innerHTML = ''; // Clear previous suggestions
+
+            suggestions.forEach(movie => {
+                const suggestionItem = document.createElement('li');
+                suggestionItem.textContent = movie.Title;
+                suggestionItem.addEventListener('click', () => {
+                    // Handle suggestion click, e.g., redirect to movie details page
+                    window.location.href = `movie-details.html?id=${movie.imdbID}`;
+                });
+                suggestionList.appendChild(suggestionItem);
+            });
+        }
+
+        // Add an event listener to the search input to trigger the search on keyup
+        document.getElementById('searchInput').addEventListener('keyup', searchMovie);
+
+        //login page
+        document.querySelector('.sign-in-btn').addEventListener('click', function () {
+            window.location.href = 'login.html';
+        });
+        // profile display
+
+        window.onload = function () {
+            const loggedIn = sessionStorage.getItem("loggedIn");
+
+            if (loggedIn === "true") {
+                // Hide the sign-in button and show the profile icon
+                document.getElementById("signInBtn").style.display = "none";
+                const profileIcon = document.getElementById("profile-icon");
+                profileIcon.style.display = "block"; // Show profile icon
+                profileIcon.title = `Welcome, ${sessionStorage.getItem("username")}`; // Set title with the username
+            }
+        }
+
+
+
+
+
+        //sliding images
+        const slider = document.getElementById('slider');
+        const indicatorsContainer = document.getElementById('indicators');
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        // Create indicators
+        for (let i = 0; i < slides.length; i++) {
+            const indicator = document.createElement('div');
+            indicator.classList.add('indicator');
+            indicator.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        const indicators = document.querySelectorAll('.indicator');
+        updateIndicators();
+        function showSlide(n) {
+            slider.style.transform = `translateX(-${n * 100}%)`;
+            currentSlide = n;
+            updateIndicators();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function goToSlide(n) {
+            showSlide(n);
+        }
+        function updateIndicators() {
+            indicators.forEach((indicator, index) => {
+                if (index === currentSlide) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+        // Optional: Automatic slideshow
+        setInterval(nextSlide, 3000); // Change slide every 3 seconds
+
+        // body section
+
+        const API_KEY = '417ea838';
+
+        // Categories of Movies
+        const categories = ['Action', 'Comedy', 'Drama', 'Horror'];
+
+        // Fetch movies for a category
+        async function fetchMovies(category) {
+            try {
+                const response = await fetch(`https://www.omdbapi.com/?s=${category}&type=movie&apikey=${API_KEY}`);
+                const data = await response.json();
+
+                if (data.Response === 'True') {
+                    displayMovies(data.Search, category);
+                } else {
+                    console.error(`Unable to fetch ${category} movies.`);
+                }
+            } catch (error) {
+                console.error("An error occurred while fetching movie data.", error);
+            }
+        }
+
+        // Display the fetched movies in the corresponding grid
+        function displayMovies(movies, category) {
+            const categoryContainer = document.getElementById(`${category.toLowerCase()}Movies`);
+            categoryContainer.innerHTML = ''; // Clear existing content
+
+            movies.slice(0, 5).forEach(movie => {
+                const movieBox = document.createElement('div');
+                movieBox.classList.add('movie-box');
+                movieBox.innerHTML = `
+                    <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/300'}" alt="${movie.Title} Poster">
+                    <h4>${movie.Title}</h4>
+                    <button onclick="window.location.href='movie-details.html?id=${movie.imdbID}'">Book Now</button>
+                `;
+                categoryContainer.appendChild(movieBox);
+            });
+        }
+
+        // Fetch movies for all categories
+        categories.forEach(category => fetchMovies(category));
+    </script>
+
+</body>
+
+</html>

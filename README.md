@@ -1,5 +1,4 @@
 # B41_WEB_007_CodeKnights
-# B41_WEB205_CodeKnights
 # Project Title
 
 ## Introduction

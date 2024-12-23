@@ -1,9 +1,9 @@
 # B41_WEB_007_CodeKnights
 # Project Title
--ShowTime
+ShowTime
 
 ## Introduction
--ShowTime is a web application designed  to simplify the process of booking movie tickets.It aims to solve the problem of fragmented information and booking experiences by bringing everything into one place.
+ShowTime is a web application designed  to simplify the process of booking movie tickets.It aims to solve the problem of fragmented information and booking experiences by bringing everything into one place.
 
 ## Project Type
 Frontend
@@ -36,10 +36,10 @@ moviebookingapp/
 ├── public/
 
 ## Video Walkthrough of the project
--https://youtu.be/-Li2j7sXnW4
+https://youtu.be/-Li2j7sXnW4
 
 ## Video Walkthrough of the codebase
-Attach a very short video walkthough of codebase [ 1 - 5 minutes ]
+https://youtu.be/llQ9aowIfRc
 
 ## Features
 -User Authentication: Secure login and signup functionality for users.
@@ -48,16 +48,16 @@ Attach a very short video walkthough of codebase [ 1 - 5 minutes ]
 -Responsive Design: Optimized for desktops, tablets, and smartphones.
 
 ## design decisions or assumptions
--Movies, showtimes, and seat availability are hardcoded into the application for demonstration purposes.
+-Movies data was fetched using OMDB API
+-Showtimes and seat availability are hardcoded into the application for demonstration purposes.
 -Local storage is used to save user preferences and booking details temporarily.
--No backend integration is implemented.
 
 ## Installation & Getting started
 -1.Open git bash.
 -2.Use (cd Desktop) command to change path to desktop.
 -3.Use git Clone https://github.com/shamanthgiddaluru/B41_WEB_007_CodeKnights command to clone the repository in Desktop.
 -4.Open B41_WEB_007_CodeKnights folder.
--5.Open index.html file into your browser.
+-5.Open index.html file in your browser.
 
 ## Usage
 -Open the application in a browser.
@@ -77,6 +77,6 @@ Attach a very short video walkthough of codebase [ 1 - 5 minutes ]
 GET /417ea838/movies - Retrieve all available movies
 
 ## Technology Stack
-Frontend: HTML, CSS, Jave-Script
+Frontend: HTML, CSS, JavaScript
 Database: Local Storage 
-Deployment: Netlfy (Frontend)
+Deployment: Netlify (Frontend)

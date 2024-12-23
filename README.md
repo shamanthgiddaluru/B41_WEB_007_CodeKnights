@@ -65,7 +65,7 @@ Local storage is used to save user preferences and booking details temporarily.
 Open the application in a browser.
 Explore available shows from the homepage.
 Log in or create an account to book tickets.
-Select a show, choose seats, and proceed with payment.
+Select a show, choose seats, and click on the Book button.
 
 ## Credentials
 User: Name

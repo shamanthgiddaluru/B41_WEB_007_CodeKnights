@@ -3,7 +3,9 @@
 ShowTime
 
 ## Introduction
-ShowTime is a web application designed  to simplify the process of booking movie tickets.It aims to solve the problem of fragmented information and booking experiences by bringing everything into one place.
+🎥 Showtime - Movie Ticket Booking Platform
+
+Showtime is a feature-rich web application designed to simplify the process of booking movie tickets. By consolidating essential features and creating an intuitive interface, Showtime offers a seamless experience for movie enthusiasts.
 
 ## Project Type
 Frontend
@@ -42,36 +44,36 @@ https://youtu.be/-Li2j7sXnW4
 https://youtu.be/llQ9aowIfRc
 
 ## Features
--User Authentication: Secure login and signup functionality for users.
--Event Listings: Browse through available shows with details like timing, venue, and ticket price.
--Real-Time Booking: Reserve tickets in real time with seat selection.
--Responsive Design: Optimized for desktops, tablets, and smartphones.
+User Authentication: Secure login and signup functionality for users.
+Event Listings: Browse through available shows with details like timing, venue, and ticket price.
+Real-Time Booking: Reserve tickets in real time with seat selection.
+Responsive Design: Optimized for desktops, tablets, and smartphones.
 
 ## design decisions or assumptions
--Movies data was fetched using OMDB API
--Showtimes and seat availability are hardcoded into the application for demonstration purposes.
--Local storage is used to save user preferences and booking details temporarily.
+Movies data was fetched using OMDB API
+Showtimes and seat availability are hardcoded into the application for demonstration purposes.
+Local storage is used to save user preferences and booking details temporarily.
 
 ## Installation & Getting started
--1.Open git bash.
--2.Use (cd Desktop) command to change path to desktop.
--3.Use git Clone https://github.com/shamanthgiddaluru/B41_WEB_007_CodeKnights command to clone the repository in Desktop.
--4.Open B41_WEB_007_CodeKnights folder.
--5.Open index.html file in your browser.
+1.Open git bash.
+2.Use (cd Desktop) command to change path to desktop.
+3.Use git Clone https://github.com/shamanthgiddaluru/B41_WEB_007_CodeKnights command to clone the repository in Desktop.
+4.Open B41_WEB_007_CodeKnights folder.
+5.Open index.html file in your browser.
 
 ## Usage
--Open the application in a browser.
--Explore available shows from the homepage.
--Log in or create an account to book tickets.
--Select a show, choose seats, and proceed with payment.
+Open the application in a browser.
+Explore available shows from the homepage.
+Log in or create an account to book tickets.
+Select a show, choose seats, and proceed with payment.
 
 ## Credentials
--User: Name
--Email: user@showtime.com
--Password: user123
+User: Name
+Email: user@showtime.com
+Password: user123
 
 ## APIs Used
--http://www.omdbapi.com/?i=tt3896198&apikey=417ea838 this API we use to get movie details
+http://www.omdbapi.com/?i=tt3896198&apikey=417ea838 this API we use to get movie details
 
 ## API Endpoints
 GET /417ea838/movies - Retrieve all available movies

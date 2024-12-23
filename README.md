@@ -44,15 +44,15 @@ https://youtu.be/-Li2j7sXnW4
 https://youtu.be/llQ9aowIfRc
 
 ## Features
-User Authentication: Secure login and signup functionality for users.
-Event Listings: Browse through available shows with details like timing, venue, and ticket price.
-Real-Time Booking: Reserve tickets in real time with seat selection.
-Responsive Design: Optimized for desktops, tablets, and smartphones.
+1) User Authentication: Secure login and signup functionality for users.
+2) Event Listings: Browse through available shows with details like timing, venue, and ticket price.
+3) Real-Time Booking: Reserve tickets in real time with seat selection.
+4) Responsive Design: Optimized for desktops, tablets, and smartphones.
 
 ## design decisions or assumptions
-Movies data was fetched using OMDB API
-Showtimes and seat availability are hardcoded into the application for demonstration purposes.
-Local storage is used to save user preferences and booking details temporarily.
+1) Movies data was fetched using OMDB API
+2) Showtimes and seat availability are hardcoded into the application for demonstration purposes.
+3) Local storage is used to save user preferences and booking details temporarily.
 
 ## Installation & Getting started
 1.Open git bash.

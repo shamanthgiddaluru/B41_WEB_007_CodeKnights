@@ -1,73 +1,82 @@
 # B41_WEB_007_CodeKnights
 # Project Title
+-ShowTime
 
 ## Introduction
-A brief introduction of your project goes here. You may want to cover the purpose of your project, its core functionality, and what problems it solves.
+-ShowTime is a web application designed  to simplify the process of booking movie tickets.It aims to solve the problem of fragmented information and booking experiences by bringing everything into one place.
 
 ## Project Type
-Frontend | Backend | Fullstack
+Frontend
 
 ## Deplolyed App
-Frontend: https://deployed-site.whatever
-Backend: https://deployed-site.whatever
-Database: https://deployed-site.whatever
+Frontend: https://showtime-moviebookingapp.netlify.app/
 
 ## Directory Structure
-my-app/
-├─ backend/
-├─ frontend/
-│  ├─ ...
+moviebookingapp/
+├── backend/
+│   ├── MoviesApi/
+├── frontend/
+│   ├── src/
+│       ├── components/
+|       |   ├──facebook.png/
+|       |   ├──instagram.png/
+|       |   ├──twitter.png/
+|       |   ├──mastercard.png/
+|       |   ├──paypal.png/
+|       |   ├──visa.png/
+|       |   ├──showtime.png/
+|       |   
+│       ├── pages/
+│           ├──index.html/
+|           ├──login.html/
+|           ├──movie-details.html/
+|           ├──moviespage.html/
+|           ├──seatingpage.html/
+├── README.md
+├── public/
 
 ## Video Walkthrough of the project
-Attach a very short video walkthough of all of the features [ 1 - 3 minutes ]
+-https://youtu.be/-Li2j7sXnW4
 
 ## Video Walkthrough of the codebase
 Attach a very short video walkthough of codebase [ 1 - 5 minutes ]
 
 ## Features
-List out the key features of your application.
-
-- Feature 1
-- Feature 2
-- Feature 3
+-User Authentication: Secure login and signup functionality for users.
+-Event Listings: Browse through available shows with details like timing, venue, and ticket price.
+-Real-Time Booking: Reserve tickets in real time with seat selection.
+-Responsive Design: Optimized for desktops, tablets, and smartphones.
 
 ## design decisions or assumptions
-List your design desissions & assumptions
+-Movies, showtimes, and seat availability are hardcoded into the application for demonstration purposes.
+-Local storage is used to save user preferences and booking details temporarily.
+-No backend integration is implemented.
 
 ## Installation & Getting started
-Detailed instructions on how to install, configure, and get the project running. For BE/FS projects, guide the reviewer how to check mongodb schema etc.
-
-```bash
-npm install my-project
-cd my-project
-npm start
-```
+-1.Open git bash.
+-2.Use (cd Desktop) command to change path to desktop.
+-3.Use git Clone https://github.com/shamanthgiddaluru/B41_WEB_007_CodeKnights command to clone the repository in Desktop.
+-4.Open B41_WEB_007_CodeKnights folder.
+-5.Open index.html file into your browser.
 
 ## Usage
-Provide instructions and examples on how to use your project.
-
-```bash
-# Example
-```
-
-Include screenshots as necessary.
+-Open the application in a browser.
+-Explore available shows from the homepage.
+-Log in or create an account to book tickets.
+-Select a show, choose seats, and proceed with payment.
 
 ## Credentials
-Provide user credentials for autheticated pages
+-User: Name
+-Email: user@showtime.com
+-Password: user123
 
 ## APIs Used
-If your application relies on external APIs, document them and include any necessary links or references.
+-http://www.omdbapi.com/?i=tt3896198&apikey=417ea838 this API we use to get movie details
 
 ## API Endpoints
-In case of Backend Applications provide a list of your API endpoints, methods, brief descriptions, and examples of request/response.
-GET /api/items - retrieve all items
-POST /api/items - create a new item
-
+GET /417ea838/movies - Retrieve all available movies
 
 ## Technology Stack
-List and provide a brief overview of the technologies used in the project.
-
-- Node.js
-- Express.js
-- MongoDB
-- Other libraries/modules
+Frontend: HTML, CSS, Jave-Script
+Database: Local Storage 
+Deployment: Netlfy (Frontend)
